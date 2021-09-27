@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+      body{
+        background-image: radial-gradient(circle, #00e2ff, #00add7, #007aa9, #004b78, #002146);
+    }     
+    </style>
+    <title>chatpage with us</title>
+</head>
+
+<body>
+        <nav class="navbar navbar-expand-lg navbar-info bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="{{url_for('home')}}">COVIBOT</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{url_for('register')}}">SIGN UP</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('login')}}">LOGIN</a>
+          </li>
+          <li class="nav-item float-right">
+            <a class="btn btn-info rounded-pill" href="{{url_for('logout')}}">LOGOUT</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+        </nav>
+          <div class="container my-3">
+            <div id="chatbox" class="alert alert-dark bg-dark text-white">
+                <p class="botText"><span>Hi! I'm COVIBOT, how can i help you ?</span></p>
+            </div>
+            <div class="d-flex p-2" id="userInput">
+                <input id="textInput" class="form-control" type="text" name="msg" placeholder="Type Your Message Here">
+                <input id="buttonInput" class="btn btn-info w-25" type="submit" value="Send">
+            </div>
+<script>
+    function getResponse() {
+        let userText = $("#textInput").val();
+        let userHtml = '<p class="userText alert alert-light  text-dark"><span>' + userText + '</span></p>';
+        $("#textInput").val("");
+        $("#chatbox").append(userHtml);
+        document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+        $.get("/get", { msg: userText }).done(function(data) {
+        var botHtml = '<p class="botText"><span>' + data + '</span></p>';
+        $("#chatbox").append(botHtml);
+        document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+});
+}
+    $("#textInput").keypress(function(e) {
+    //if enter key is pressed
+        if(e.which == 13) {
+            getResponse();
+        }
+    });
+    $("#buttonInput").click(function() {
+        getResponse();
+    });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</div>
+</body>
+</html>
